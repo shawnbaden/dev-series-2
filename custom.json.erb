@@ -1,0 +1,23 @@
+{
+    <% base_url = "http://shawnbaden.com" %>
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Shawn Baden’s Dev Channel",
+    "home_page_url": "<%= base_url + '/dev' %>",
+    "feed_url": "<%= base_url + '/feeds/dev.json' %>",
+    "author": {
+        "name": "Shawn Baden",
+        "url": "http://shawnbaden.com"
+    },
+    "items": [
+        <% resources = sitemap.resources.select{ |resource| resource.path =~ /dev\/series\/[0-9]+\/index.html/ } %>
+        <% resources.sort_by { |resource| resource.metadata[:page][:date_published]}.reverse.each_with_index do |resource, index| %>
+        {
+            "id": "<%= base_url + resource.url %>",
+            "url": "<%= base_url + resource.url %>",
+            "title": <%= resource.metadata[:page][:title].to_json %>,
+            "date_published": "<%= resource.metadata[:page][:date_published].to_s%>",
+            "content_html": <%= resource.metadata[:page][:title].to_json %>
+        }<%= "," unless resources.size - 1 == index %>
+        <% end %>
+    ]
+}

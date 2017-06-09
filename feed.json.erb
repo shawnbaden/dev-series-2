@@ -1,0 +1,18 @@
+{
+    <% base_url = "https://example.org" %>
+    "version": "https://jsonfeed.org/version/1",
+    "title": "My Example Feed",
+    "home_page_url": "<%= base_url %>",
+    "feed_url": "<%= base_url + "/feed.json" %>",
+    "items": [
+        <% articles = blog.articles[0...5]; articles.each_with_index do |article, index| %>
+        {
+            "id": "<%= base_url + article.url %>",
+            "url": "<%= base_url + article.url %>",
+            "title": <%= article.title.to_json %>,
+            "date_published": "<%= article.date.to_datetime.rfc3339 %>",
+            "content_html": <%= article.body.to_json %>
+        }<%= "," unless articles.size - 1 == index %>
+        <% end %>
+    ]
+}
